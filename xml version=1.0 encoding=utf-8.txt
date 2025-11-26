@@ -1,47 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<style xmlns="http://purl.org/net/xbiblio/csl" version="1.0" class="in-text" name="American Medical Association (Full Authors)">
+<style xmlns="http://purl.org/net/xbiblio/csl" version="1.0" class="in-text" default-locale="en-US">
   <info>
-    <title>American Medical Association 11th edition (Full Authors – No et al.)</title>
+    <title>American Medical Association 11th edition (Full Authors)</title>
+    <title-short>AMA Full Authors</title-short>
     <id>http://www.zotero.org/styles/ama-full-authors</id>
-    <link href="http://www.zotero.org/styles/ama"/>
+    <link href="http://www.zotero.org/styles/ama" rel="template"/>
     <author>
-      <name>AMA Full Authors modification</name>
+      <name>Matheus Custom AMA Full Authors</name>
     </author>
     <category citation-format="numeric"/>
     <category field="medicine"/>
     <updated>2025-01-01T00:00:00+00:00</updated>
+    <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
 
-  <!-- ======================== -->
-  <!-- REMOVE ALL "ET AL." RULES -->
-  <!-- ======================== -->
+  <!-- ************************************* -->
+  <!-- REMOVE “et al.” — LIST ALL AUTHORS    -->
+  <!-- ************************************* -->
+
   <macro name="author">
     <names variable="author">
-      <name form="short" and="text" delimiter=", "/>
-
-      <!-- AQUI ESTÁ A ALTERAÇÃO PRINCIPAL -->
+      <name form="short" delimiter=", " and="text"/>
+      <!-- DESATIVA COMPLETAMENTE O ET AL -->
       <et-al min="999" use-first="999"/>
-
       <label form="short" prefix=", "/>
     </names>
   </macro>
 
-  <!-- ======================== -->
-  <!-- AMA ORIGINAL (sem mudar nada) -->
-  <!-- ======================== -->
+  <macro name="editor">
+    <names variable="editor">
+      <name form="short" delimiter=", " and="text"/>
+      <et-al min="999" use-first="999"/>
+      <label form="short" prefix=", "/>
+    </names>
+  </macro>
+
+  <!-- ************************************* -->
+  <!-- RESTANTE DO AMA ORIGINAL (NÃO ALTERADO) -->
+  <!-- ************************************* -->
 
   <macro name="title">
-    <text variable="title" suffix="."/>
+    <text variable="title"/>
   </macro>
 
   <macro name="container-title">
-    <text variable="container-title" form="short" italic="true"/>
+    <text variable="container-title" form="short" strip-periods="false"/>
   </macro>
 
-  <macro name="year">
+  <macro name="issued">
     <date variable="issued">
       <date-part name="year"/>
     </date>
+  </macro>
+
+  <macro name="publisher">
+    <group delimiter=": ">
+      <text variable="publisher-place"/>
+      <text variable="publisher"/>
+    </group>
   </macro>
 
   <macro name="volume">
@@ -52,35 +68,47 @@
     <text variable="page"/>
   </macro>
 
-  <citation collapse="citation-number">
+  <citation collapse="citation-number" after-collapse-delimiter=", ">
     <sort>
       <key variable="citation-number"/>
     </sort>
-    <layout prefix="" suffix=".">
+    <layout suffix=".">
       <text variable="citation-number"/>
     </layout>
   </citation>
 
-  <bibliography>
+  <bibliography entry-spacing="0" second-field-align="flush">
     <sort>
       <key variable="citation-number"/>
     </sort>
-
     <layout suffix=".">
       <text variable="citation-number" suffix=". "/>
 
-      <!-- AUTHOR LIST COMPLETO -->
+      <!-- AUTOR COMPLETO -->
       <text macro="author" suffix=". "/>
 
-      <text macro="title" suffix=" "/>
-      <text macro="container-title" suffix=". "/>
+      <!-- TÍTULO -->
+      <text macro="title" suffix=". "/>
 
-      <text macro="year" suffix=";"/>
-      <text macro="volume" suffix=":"/>
-      <text macro="pages"/>
+      <!-- JOURNAL -->
+      <group suffix=". ">
+        <text macro="container-title"/>
+      </group>
 
-      <text variable="DOI" prefix=". doi:"/>
+      <!-- YEAR;VOLUME:PAGE -->
+      <group>
+        <text macro="issued" suffix=";"/>
+        <text macro="volume" suffix=":"/>
+        <text macro="pages"/>
+      </group>
+
+      <!-- DOI -->
+      <group prefix=". doi:">
+        <text variable="DOI"/>
+      </group>
     </layout>
   </bibliography>
 
 </style>
+
+
